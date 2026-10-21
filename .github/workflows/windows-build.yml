@@ -1,0 +1,22 @@
+name: Windows build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Check repository foundation
+        shell: pwsh
+        run: |
+          if (-not (Test-Path README.md)) { throw 'README.md missing' }
+          if (-not (Test-Path docs/COMPATIBILITY.md)) { throw 'Compatibility matrix missing' }
+          Write-Host 'Foundation files present. No .NET solution exists yet, so this workflow does not claim an application build.'
